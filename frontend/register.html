@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nestora Connect | Register</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #1c2d3d;
+      background: #eef4f8;
+    }
+
+    .register-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .register-shell {
+      width: min(1040px, 100%);
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      overflow: hidden;
+      border-radius: 8px;
+      background: #ffffff;
+      box-shadow: 0 22px 55px rgba(20, 43, 61, 0.14);
+    }
+
+    .intro-panel {
+      position: relative;
+      min-height: 680px;
+      padding: 42px;
+      display: flex;
+      align-items: flex-end;
+      color: #ffffff;
+      background:
+        linear-gradient(180deg, rgba(13, 38, 54, 0.14), rgba(13, 38, 54, 0.82)),
+        url("https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1000&q=85") center/cover;
+    }
+
+    .intro-content {
+      max-width: 420px;
+    }
+
+    .intro-content h1 {
+      font-size: clamp(2.2rem, 4vw, 4rem);
+      line-height: 1.04;
+      margin-bottom: 16px;
+    }
+
+    .intro-content p {
+      color: #e5eef3;
+      font-size: 1.02rem;
+      line-height: 1.7;
+    }
+
+    .form-panel {
+      padding: 44px;
+    }
+
+    .brand {
+      display: inline-block;
+      color: #0f766e;
+      font-size: 0.92rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .form-panel h2 {
+      color: #13283a;
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .form-intro {
+      color: #627386;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    label,
+    .field-label {
+      color: #26394c;
+      font-size: 0.94rem;
+      font-weight: 800;
+    }
+
+    input {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
+      border: 1px solid #c9d4df;
+      border-radius: 8px;
+      color: #142638;
+      background: #f9fbfd;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    input:focus {
+      border-color: #0f766e;
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.13);
+    }
+
+    .user-type-group {
+      margin: 20px 0 22px;
+    }
+
+    .type-options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .type-option {
+      position: relative;
+      display: block;
+      cursor: pointer;
+    }
+
+    .type-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .type-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      padding: 12px;
+      border: 1px solid #c9d4df;
+      border-radius: 8px;
+      color: #2c4155;
+      background: #f9fbfd;
+      font-weight: 800;
+      transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .type-option input:checked + .type-card {
+      color: #ffffff;
+      border-color: #0f766e;
+      background: #0f766e;
+      box-shadow: 0 10px 22px rgba(15, 118, 110, 0.22);
+    }
+
+    .register-button {
+      width: 100%;
+      min-height: 50px;
+      border: 0;
+      border-radius: 8px;
+      color: #ffffff;
+      background: #12384f;
+      font-size: 1rem;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .register-button:hover,
+    .register-button:focus {
+      background: #0f766e;
+      transform: translateY(-1px);
+    }
+
+    .login-copy {
+      margin-top: 22px;
+      color: #68798a;
+      text-align: center;
+      font-size: 0.96rem;
+    }
+
+    .login-copy a {
+      color: #0f766e;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .login-copy a:hover,
+    .login-copy a:focus {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 920px) {
+      .register-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .intro-panel {
+        min-height: 320px;
+        padding: 32px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .register-page {
+        padding: 0;
+        align-items: stretch;
+      }
+
+      .register-shell {
+        min-height: 100vh;
+        border-radius: 0;
+      }
+
+      .intro-panel {
+        min-height: 240px;
+        padding: 24px;
+      }
+
+      .intro-content p {
+        display: none;
+      }
+
+      .form-panel {
+        padding: 30px 18px 38px;
+      }
+
+      .form-grid,
+      .type-options {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="register-page">
+    <section class="register-shell">
+      <aside class="intro-panel" aria-label="Nestora Connect welcome">
+        <div class="intro-content">
+          <h1>Start your rental journey with confidence.</h1>
+          <p>Create your Nestora Connect account to discover homes, list properties, and manage visits across neighborhoods.</p>
+        </div>
+      </aside>
+
+      <section class="form-panel" aria-label="Registration form">
+        <span class="brand">Nestora Connect</span>
+        <h2>Create account</h2>
+        <p class="form-intro">Register as a customer or owner and continue to your property dashboard.</p>
+
+        <form id="register-form">
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label for="full-name">Full Name</label>
+              <input type="text" id="full-name" name="full-name" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            </div>
+
+            <div class="form-group">
+              <label for="mobile">Mobile Number</label>
+              <input type="tel" id="mobile" name="mobile" placeholder="+91 98765 43210" required>
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" placeholder="Create a password" required>
+            </div>
+
+            <div class="form-group">
+              <label for="confirm-password">Confirm Password</label>
+              <input type="password" id="confirm-password" name="confirm-password" placeholder="Re-enter password" required>
+            </div>
+          </div>
+
+          <div class="user-type-group">
+            <p class="field-label">User Type</p>
+            <div class="type-options">
+              <label class="type-option">
+                <input type="radio" name="user-type" value="customer" checked>
+                <span class="type-card">Customer</span>
+              </label>
+
+              <label class="type-option">
+                <input type="radio" name="user-type" value="owner">
+                <span class="type-card">Owner</span>
+              </label>
+            </div>
+          </div>
+
+          <button class="register-button" type="submit">Register</button>
+        </form>
+
+        <p class="login-copy">
+          Already have an account? <a href="login.html">Login</a>
+        </p>
+      </section>
+    </section>
+  </main>
+  <script>
+    document.getElementById("register-form").addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const form = event.currentTarget;
+      const formData = new FormData(form);
+      const body = Object.fromEntries(formData.entries());
+
+      try {
+        const response = await fetch("/api/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(body)
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || "Registration failed.");
+        }
+
+        alert("Registration successful. Please log in.");
+        window.location.href = "login.html";
+      } catch (error) {
+        console.error(error);
+        alert(error.message);
+      }
+    });
+  </script>
+</body>
+</html>

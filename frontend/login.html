@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nestora Connect | Login</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #1b2b3c;
+      background: #f5f8fb;
+    }
+
+    .login-page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(420px, 0.95fr);
+    }
+
+    .image-panel {
+      position: relative;
+      min-height: 100vh;
+      overflow: hidden;
+      background: #183448;
+    }
+
+    .image-panel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .image-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: flex-end;
+      padding: 48px;
+      color: #ffffff;
+      background: linear-gradient(180deg, rgba(12, 30, 44, 0.12), rgba(12, 30, 44, 0.76));
+    }
+
+    .image-copy {
+      max-width: 520px;
+    }
+
+    .image-copy h1 {
+      font-size: clamp(2.2rem, 5vw, 4.5rem);
+      line-height: 1.02;
+      margin-bottom: 14px;
+    }
+
+    .image-copy p {
+      color: #dfeaf0;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .form-panel {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 44px;
+      background: #ffffff;
+    }
+
+    .login-card {
+      width: min(100%, 430px);
+    }
+
+    .brand {
+      display: inline-block;
+      color: #0f766e;
+      font-size: 1rem;
+      font-weight: 900;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    .login-card h2 {
+      color: #13283a;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .intro {
+      color: #647486;
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .login-type-group {
+      margin-bottom: 20px;
+    }
+
+    .field-label {
+      display: block;
+      color: #26394c;
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .login-types {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .login-type {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .login-type input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .login-type-card {
+      display: block;
+      min-height: 52px;
+      padding: 15px 12px;
+      border: 1px solid #c9d4df;
+      border-radius: 8px;
+      color: #2c4155;
+      background: #f9fbfd;
+      font-weight: 900;
+      text-align: center;
+      transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .login-type input:checked + .login-type-card {
+      color: #ffffff;
+      border-color: #0f766e;
+      background: #0f766e;
+      box-shadow: 0 10px 22px rgba(15, 118, 110, 0.22);
+    }
+
+    label {
+      display: block;
+      color: #26394c;
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
+      border: 1px solid #c9d4df;
+      border-radius: 8px;
+      color: #142638;
+      background: #f9fbfd;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    input:focus {
+      border-color: #0f766e;
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.13);
+    }
+
+    .login-button {
+      width: 100%;
+      min-height: 50px;
+      margin-top: 8px;
+      border: 0;
+      border-radius: 8px;
+      color: #ffffff;
+      background: #12384f;
+      font-size: 1rem;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .login-button:hover,
+    .login-button:focus {
+      background: #0f766e;
+      transform: translateY(-1px);
+    }
+
+    .login-message {
+      display: none;
+      margin: 0 0 16px;
+      padding: 12px 14px;
+      border: 1px solid #f1b6b6;
+      border-radius: 8px;
+      color: #9f1c1c;
+      background: #fff6f6;
+      font-size: 0.95rem;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    .login-message.active {
+      display: block;
+    }
+
+    .register-copy {
+      margin-top: 24px;
+      color: #68798a;
+      text-align: center;
+      font-size: 0.96rem;
+    }
+
+    .register-copy a {
+      color: #0f766e;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .register-copy a:hover,
+    .register-copy a:focus {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 900px) {
+      .login-page {
+        grid-template-columns: 1fr;
+      }
+
+      .image-panel {
+        min-height: 38vh;
+      }
+
+      .image-overlay {
+        padding: 32px;
+      }
+
+      .form-panel {
+        min-height: auto;
+        padding: 38px 24px 48px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .image-panel {
+        min-height: 32vh;
+      }
+
+      .image-overlay {
+        padding: 24px;
+      }
+
+      .image-copy p {
+        display: none;
+      }
+
+      .form-panel {
+        padding: 30px 18px 42px;
+      }
+
+      .login-types {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="login-page">
+    <section class="image-panel" aria-label="Featured home">
+      <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85" alt="Modern house exterior with warm lighting">
+      <div class="image-overlay">
+        <div class="image-copy">
+          <h1>Find your next home.</h1>
+          <p>Login to manage enquiries, save favorite rentals, and schedule property visits with Nestora Connect.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="form-panel" aria-label="Login form">
+      <div class="login-card">
+        <span class="brand">Nestora Connect</span>
+        <h2>Welcome back</h2>
+        <p class="intro">Choose your login type and enter your account details to continue.</p>
+
+        <form id="login-form">
+          <p class="login-message" id="login-message" role="alert"></p>
+
+          <div class="login-type-group">
+            <span class="field-label">Login Type</span>
+            <div class="login-types">
+              <label class="login-type">
+                <input type="radio" name="login-type" value="customer" checked>
+                <span class="login-type-card">Customer Login</span>
+              </label>
+
+              <label class="login-type">
+                <input type="radio" name="login-type" value="owner">
+                <span class="login-type-card">Owner Login</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+          </div>
+
+          <button class="login-button" type="submit">Login</button>
+        </form>
+
+        <p class="register-copy">
+          New to Nestora Connect? <a href="register.html">Create an account</a>
+        </p>
+      </div>
+    </section>
+  </main>
+  <script>
+    const loginForm = document.getElementById("login-form");
+    const loginMessage = document.getElementById("login-message");
+
+    function showLoginMessage(message) {
+      loginMessage.textContent = message;
+      loginMessage.classList.add("active");
+    }
+
+    function clearLoginMessage() {
+      loginMessage.textContent = "";
+      loginMessage.classList.remove("active");
+    }
+
+    loginForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      clearLoginMessage();
+
+      const form = event.currentTarget;
+      const formData = new FormData(form);
+      const body = Object.fromEntries(formData.entries());
+      const apiBaseUrl = window.location.protocol === "file:" ? "http://localhost:3000" : "";
+
+      try {
+        const response = await fetch(`${apiBaseUrl}/api/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(body)
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          if (response.status === 401 || response.status === 403) {
+            throw new Error("Invalid credentials.");
+          }
+          throw new Error(data.message || "Login failed.");
+        }
+
+        if (body["login-type"] === "owner") {
+          localStorage.setItem("ownerSession", JSON.stringify({
+            email: data.user.email,
+            fullName: data.user.fullName,
+            loginTime: new Date().toISOString()
+          }));
+          window.location.href = "owner-dashboard.html";
+        } else {
+          window.location.href = "properties.html";
+        }
+      } catch (error) {
+        console.error(error);
+        if (error.message === "Failed to fetch") {
+          showLoginMessage("Unable to connect to the server. Open the app from http://localhost:3000/login.html and try again.");
+          return;
+        }
+
+        showLoginMessage(error.message || "Invalid credentials.");
+      }
+    });
+  </script>
+</body>
+</html>
