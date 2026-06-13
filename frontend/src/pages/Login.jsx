@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { User, Shield, Key, Mail, AlertTriangle } from "lucide-react";
+import { API_BASE } from "../config";
+
 
 export default function Login() {
   const navigate = useNavigate();
@@ -17,7 +19,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/login", {
+      const response = await fetch(`${API_BASE}/api/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

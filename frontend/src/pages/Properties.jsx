@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Search, MapPin, Bed, Bath, ArrowRight } from "lucide-react";
+import { API_BASE, getImageUrl } from "../config";
+
 
 export default function Properties() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -81,7 +83,7 @@ export default function Properties() {
     async function fetchProperties() {
       setLoading(true);
       try {
-        const response = await fetch("/api/properties");
+        const response = await fetch(`${API_BASE}/api/properties`);
         if (!response.ok) {
           throw new Error("Failed to load properties");
         }
@@ -151,11 +153,7 @@ export default function Properties() {
 
   const getPropertyImage = (property) => {
     if (Array.isArray(property.images) && property.images.length > 0) {
-      const img = property.images[0];
-      if (img.startsWith("http") || img.startsWith("/")) {
-        return img;
-      }
-      return `/uploads/${img}`;
+      return getImageUrl(property.images[0]);
     }
     return "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80";
   };

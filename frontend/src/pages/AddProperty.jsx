@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Building2, ArrowLeft, Upload, FileText, CheckCircle2 } from "lucide-react";
+import { API_BASE } from "../config";
+
 
 export default function AddProperty() {
   const navigate = useNavigate();
@@ -84,7 +86,7 @@ export default function AddProperty() {
     }
 
     try {
-      const response = await fetch("/api/properties", {
+      const response = await fetch(`${API_BASE}/api/properties`, {
         method: "POST",
         body: formData
       });

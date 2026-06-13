@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { User, Shield, Key, Mail, Phone, FileText, AlertTriangle } from "lucide-react";
+import { API_BASE } from "../config";
+
 
 export default function Register() {
   const navigate = useNavigate();
@@ -27,7 +29,7 @@ export default function Register() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/register", {
+      const response = await fetch(`${API_BASE}/api/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

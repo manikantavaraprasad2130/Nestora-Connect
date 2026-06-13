@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { MapPin, Phone, Mail, User, Calendar, Check, ArrowLeft, Info, Eye } from "lucide-react";
+import { API_BASE, getImageUrl } from "../config";
+
 
 export default function PropertyDetails() {
   const { id } = useParams();
@@ -103,7 +105,7 @@ export default function PropertyDetails() {
     async function getProperty() {
       setLoading(true);
       try {
-        const response = await fetch(`/api/properties/${id}`);
+        const response = await fetch(`${API_BASE}/api/properties/${id}`);
         if (!response.ok) {
           throw new Error("Property not found");
         }
@@ -131,7 +133,7 @@ export default function PropertyDetails() {
     setVisitSuccess(false);
 
     try {
-      const response = await fetch("/api/visits", {
+      const response = await fetch(`${API_BASE}/api/visits`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -206,11 +208,7 @@ export default function PropertyDetails() {
   const displayImages = [];
   if (Array.isArray(property.images) && property.images.length > 0) {
     property.images.forEach((img) => {
-      if (img.startsWith("http") || img.startsWith("/")) {
-        displayImages.push(img);
-      } else {
-        displayImages.push(`/uploads/${img}`);
-      }
+      displayImages.push(getImageUrl(img));
     });
   }
 

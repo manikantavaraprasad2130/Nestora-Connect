@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LayoutDashboard, PlusCircle, Building2, LogOut, Edit3, Trash2, X, CheckCircle, Info, Phone, Mail } from "lucide-react";
+import { API_BASE } from "../config";
+
 
 export default function OwnerDashboard() {
   const navigate = useNavigate();
@@ -51,7 +53,7 @@ export default function OwnerDashboard() {
     async function loadOwnerProperties() {
       setLoading(true);
       try {
-        const response = await fetch("/api/properties", {
+        const response = await fetch(`${API_BASE}/api/properties`, {
           cache: "no-store"
         });
         if (!response.ok) {
@@ -96,7 +98,7 @@ export default function OwnerDashboard() {
     if (!confirmDelete) return;
 
     try {
-      const response = await fetch(`/api/properties/${property._id}`, {
+      const response = await fetch(`${API_BASE}/api/properties/${property._id}`, {
         method: "DELETE"
       });
       if (!response.ok) {
@@ -171,7 +173,7 @@ export default function OwnerDashboard() {
     };
 
     try {
-      const response = await fetch(`/api/properties/${activeProperty._id}`, {
+      const response = await fetch(`${API_BASE}/api/properties/${activeProperty._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
