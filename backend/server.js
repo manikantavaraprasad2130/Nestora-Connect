@@ -1,8 +1,9 @@
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, ".env") });
 const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
 const fs = require("fs");
-const path = require("path");
 const { MongoClient, ObjectId } = require("mongodb");
 
 const app = express();
@@ -29,7 +30,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(uploadDirectory));
-app.use(express.static(path.join(__dirname, "..", "frontend")));
+app.use(express.static(path.join(__dirname, "..", "frontend", "dist")));
 
 const client = new MongoClient(MONGO_URI);
 let propertiesCollection;
@@ -334,6 +335,10 @@ app.post("/api/visits", async (req, res) => {
   }
 });
 
+app.get(/.*/, (_req, res) => {
+  res.sendFile(path.join(__dirname, "..", "frontend", "dist", "index.html"));
+});
+
 app.use((error, req, res, next) => {
   if (error) {
     return res.status(400).json({ message: error.message });
@@ -358,5 +363,5 @@ async function start() {
   }
 }
 
-start();
+start(); // reload trigger
 
