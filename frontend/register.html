@@ -323,6 +323,7 @@
       </section>
     </section>
   </main>
+  <script src="js/config.js"></script>
   <script>
     document.getElementById("register-form").addEventListener("submit", async function (event) {
       event.preventDefault();
@@ -332,7 +333,7 @@
       const body = Object.fromEntries(formData.entries());
 
       try {
-        const response = await fetch("/api/register", {
+        const response = await fetch(window.NestoraConfig.apiUrl("/api/register"), {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

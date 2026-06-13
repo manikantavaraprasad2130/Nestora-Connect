@@ -620,6 +620,7 @@
       </article>
     </section>
   </main>
+  <script src="js/config.js"></script>
   <script>
     const propertyGrid = document.getElementById("property-grid");
     const searchSummary = document.getElementById("search-summary");
@@ -725,6 +726,7 @@
       if (typeof imageUrl === "string" && imageUrl && !/^https?:\/\//i.test(imageUrl) && !imageUrl.startsWith("/")) {
         imageUrl = `/uploads/${imageUrl}`;
       }
+      imageUrl = window.NestoraConfig.assetUrl(imageUrl);
 
       const bedrooms = property.bedrooms || property.bedrooms === 0 ? property.bedrooms : "--";
       const bathrooms = property.bathrooms || property.bathrooms === 0 ? property.bathrooms : "--";
@@ -758,7 +760,7 @@
 
     async function loadProperties() {
       try {
-        const response = await fetch("/api/properties");
+        const response = await fetch(window.NestoraConfig.apiUrl("/api/properties"));
         const properties = response.ok ? await response.json() : [];
         if (properties.length === 0 && !areaFilter && !typeFilter && !budgetFilter) {
           renderProperties(fallbackProperties, true);

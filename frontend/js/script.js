@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
-        const response = await fetch("/api/properties", {
+        const response = await fetch(window.NestoraConfig.apiUrl("/api/properties"), {
           method: "POST",
           body: formData
         });

@@ -619,6 +619,7 @@
     </section>
   </div>
 
+  <script src="js/config.js"></script>
   <script>
     const contactModal = document.getElementById("contact-modal");
     const visitModal = document.getElementById("visit-modal");
@@ -755,7 +756,7 @@
         return;
       }
       for (let i = 0; i < galleryImages.length; i++) {
-        galleryImages[i].src = images[i] || images[0];
+        galleryImages[i].src = window.NestoraConfig.assetUrl(images[i] || images[0]);
       }
     }
 
@@ -768,7 +769,7 @@
       }
 
       try {
-        const response = await fetch(`/api/properties/${encodeURIComponent(propertyId)}`, {
+        const response = await fetch(window.NestoraConfig.apiUrl(`/api/properties/${encodeURIComponent(propertyId)}`), {
           cache: "no-store"
         });
         const property = response.ok ? await response.json() : null;
@@ -896,7 +897,7 @@
       submitButton.textContent = "Submitting...";
 
       try {
-        const response = await fetch("/api/visits", {
+        const response = await fetch(window.NestoraConfig.apiUrl("/api/visits"), {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

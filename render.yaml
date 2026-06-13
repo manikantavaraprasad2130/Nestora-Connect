@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: nestora-connect-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: DB_NAME
+        value: mangobd

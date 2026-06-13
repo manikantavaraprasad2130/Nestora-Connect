@@ -548,6 +548,7 @@
     </section>
   </div>
 
+  <script src="js/config.js"></script>
   <script>
     const addPropertyButton = document.getElementById("add-property-button");
     const editModal = document.getElementById("edit-modal");
@@ -724,7 +725,7 @@
 
     async function loadProperties() {
       try {
-        const response = await fetch("/api/properties", {
+        const response = await fetch(window.NestoraConfig.apiUrl("/api/properties"), {
           cache: "no-store"
         });
         if (!response.ok) {
@@ -799,7 +800,7 @@
       }
 
       try {
-        const response = await fetch(`/api/properties/${propertyId}`, {
+        const response = await fetch(window.NestoraConfig.apiUrl(`/api/properties/${propertyId}`), {
           method: "DELETE"
         });
 
@@ -845,7 +846,7 @@
       };
 
       try {
-        const response = await fetch(`/api/properties/${propertyId}`, {
+        const response = await fetch(window.NestoraConfig.apiUrl(`/api/properties/${propertyId}`), {
           method: "PUT",
           headers: {
             "Content-Type": "application/json"

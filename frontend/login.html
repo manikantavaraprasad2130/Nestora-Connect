@@ -333,6 +333,7 @@
       </div>
     </section>
   </main>
+  <script src="js/config.js"></script>
   <script>
     const loginForm = document.getElementById("login-form");
     const loginMessage = document.getElementById("login-message");
@@ -354,10 +355,9 @@
       const form = event.currentTarget;
       const formData = new FormData(form);
       const body = Object.fromEntries(formData.entries());
-      const apiBaseUrl = window.location.protocol === "file:" ? "http://localhost:3000" : "";
 
       try {
-        const response = await fetch(`${apiBaseUrl}/api/login`, {
+        const response = await fetch(window.NestoraConfig.apiUrl("/api/login"), {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -386,7 +386,7 @@
       } catch (error) {
         console.error(error);
         if (error.message === "Failed to fetch") {
-          showLoginMessage("Unable to connect to the server. Open the app from http://localhost:3000/login.html and try again.");
+          showLoginMessage("Unable to connect to the server. Check the backend URL in js/config.js and try again.");
           return;
         }
 

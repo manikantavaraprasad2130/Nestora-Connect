@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017";
 const DB_NAME = process.env.DB_NAME || "mangobd";
 const COLLECTION_NAME = "properties";
+const VISITS_COLLECTION = "visits";
 
 const uploadDirectory = path.join(__dirname, "uploads");
 const storage = multer.diskStorage({
@@ -33,6 +34,7 @@ app.use(express.static(path.join(__dirname, "..", "frontend")));
 const client = new MongoClient(MONGO_URI);
 let propertiesCollection;
 let usersCollection;
+let visitsCollection;
 const USER_COLLECTION = "users";
 
 async function initDb() {
@@ -40,7 +42,12 @@ async function initDb() {
   const db = client.db(DB_NAME);
   propertiesCollection = db.collection(COLLECTION_NAME);
   usersCollection = db.collection(USER_COLLECTION);
+  visitsCollection = db.collection(VISITS_COLLECTION);
 }
+
+app.get("/api/health", (_req, res) => {
+  res.json({ status: "ok" });
+});
 
 app.get("/", (_req, res) => {
   res.sendFile(path.join(__dirname, "..", "frontend", "index.html"));
@@ -289,6 +296,41 @@ app.delete("/api/properties/:id", async (req, res) => {
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Failed to delete property." });
+  }
+});
+
+app.post("/api/visits", async (req, res) => {
+  const { propertyId, visitorName, visitorMobile, visitDate } = req.body;
+
+  if (!propertyId || !visitorName || !visitorMobile || !visitDate) {
+    return res.status(400).json({ message: "Please complete all visit request fields." });
+  }
+
+  if (!ObjectId.isValid(propertyId)) {
+    return res.status(400).json({ message: "Invalid property ID." });
+  }
+
+  try {
+    const visit = {
+      propertyId: new ObjectId(propertyId),
+      visitorName,
+      visitorMobile,
+      visitDate,
+      createdAt: new Date().toISOString()
+    };
+
+    const result = await visitsCollection.insertOne(visit);
+    return res.status(201).json({
+      message: "Visit request created.",
+      visit: {
+        ...visit,
+        _id: result.insertedId.toString(),
+        propertyId: propertyId
+      }
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Failed to save visit request." });
   }
 });
 
